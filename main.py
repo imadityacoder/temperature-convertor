@@ -1,15 +1,13 @@
 from flet import (
     Page,
     app,
-    TextButton,
     Text,
     TextField,
     colors,
     Container,
     Column,
     Row,
-    Margin,
-    BoxShadow,
+    OutlinedButton,
     Dropdown,
     dropdown,
     IconButton,
@@ -20,8 +18,8 @@ from flet import (
     icons,
     AppBar,
     Icon,
-    PopupMenuButton,
-    PopupMenuItem,
+    Banner
+
 )
 
 def main(page:Page):
@@ -30,6 +28,8 @@ def main(page:Page):
     page.horizontal_alignment = "center"
     page.theme_mode = ThemeMode.DARK
     page.auto_scroll = False
+    page.window_height=700
+    page.window_width=600
 
     def theme(e):
         if page.theme_mode == ThemeMode.DARK:
@@ -59,11 +59,10 @@ def main(page:Page):
                 )
         ],
     )
-    boxh = 120
+    boxh = 200
     boxw = 260
     fsize = 40
-    d1 = Container(
-        content=Dropdown(
+    d1 = Dropdown(
             width=boxw,
             value="Celcius",
             options=[
@@ -71,11 +70,10 @@ def main(page:Page):
                 dropdown.Option("Farenheit"),
                 dropdown.Option("Kelvin"),
             ],
-        ),
-        
         )
-    d2=Container(
-        content=Dropdown(
+        
+    
+    d2=Dropdown(
             width=boxw,
             value="Farenheit",
             bgcolor=colors.BLUE_500,
@@ -85,44 +83,76 @@ def main(page:Page):
                 dropdown.Option("Kelvin"),
             ], 
             
-            ))
-    box1=Container(
-        content = TextField(
-        hint_text="0",
+            )
+    box1= TextField(
         text_align="center",
         text_size= fsize,
         border_radius= 10,
-        keyboard_type=KeyboardType.NUMBER,
         tooltip="ENTER HERE",
         autofocus= True,
-    ),
-    bgcolor=colors.GREEN,
-    height=boxh,
-    width=boxw,
-    border_radius=10,
-    opacity=0.9,
-    margin=Margin(top=5,bottom=0,left=4,right=4),
-    shadow=BoxShadow(spread_radius=2,blur_radius=2,color=colors.BLUE_50,)
+        on_change=lambda e:mainfunc(e),
+        bgcolor=colors.GREEN_600,
+        height=boxh,
+        width=boxw,
+        opacity=0.9,
+        max_length=8,
+        )
+    page.update()    
 
-    )
-    box2=Container(
-        content = TextField(
-        hint_text="12",
+    box2= TextField(
         text_align="center",
         text_size= fsize,
-        keyboard_type=KeyboardType.NUMBER,
+        max_length=12,
         border_radius= 8,
+        bgcolor=colors.BLUE_ACCENT_400,
+        height=boxh,
+        width=boxw,
+        opacity=0.9,
         read_only=True
-    ),
-    bgcolor=colors.BLUE_ACCENT_400,
-    height=boxh,
-    width=boxw,
-    border_radius=10,
-    opacity=0.9,
-    margin=Margin(top=5,bottom=0,left=4,right=4),
-    shadow=BoxShadow(spread_radius=2,blur_radius=2,color=colors.GREEN_50,)
+    )
+    btn =OutlinedButton(
+        text="calculate",
+        on_click=lambda e:mainfunc(e),
+    )
+    def mainfunc(e):
+        inp1=box1.value
+
+        try:
+            if d1.value ==  d2.value:
+                box2.value=inp1
+                page.update()
+
+            elif box1.value == "":
+                box2.value=""
+                page.update()    
     
-    )  
+            elif d1.value =="Celcius" and d2.value == "Farenheit":
+                box2.value=str((int(inp1)*9/5)+32)
+                page.update()
+
+            elif d1.value =="Celcius" and d2.value == "Kelvin":
+                box2.value=str(int(inp1)+273.15)
+                page.update()
+
+            elif d1.value =="Farenheit" and d2.value == "Kelvin":
+                box2.value=str((int(inp1)-32)*5/9+273.15)
+                page.update()
+
+            elif d1.value =="Farenheit" and d2.value == "Celcius":
+                box2.value=str((int(inp1)-32)*5/9)
+                page.update()
+
+            elif d1.value =="Kelvin" and d2.value == "Celcius":
+                box2.value=str(int(inp1)-273.15)
+                page.update()
+                
+            elif d1.value =="Kelvin" and d2.value == "Farenheit":
+                box2.value=str((int(inp1)-273.15)*9/5+32)
+                page.update()
+        except Exception as e:
+            print("error",e)
+
+
     page.add(
         Row(
             [
@@ -138,5 +168,7 @@ def main(page:Page):
             ],
             alignment="center",
         ),
+        btn
     )
-app(target=main)
+if __name__=="__main__":
+    app(target=main)
