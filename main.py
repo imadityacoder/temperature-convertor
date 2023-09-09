@@ -22,7 +22,6 @@ def main(page:Page):
     page.title="Welcome to Aditya's Temrature-Converter"
     page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
-    page.theme_mode = ThemeMode.DARK
 
     def openbn():
         page.banner.open=True
@@ -32,7 +31,7 @@ def main(page:Page):
         bgcolor=colors.AMBER_100,
         leading=Icon(icons.WARNING_AMBER_ROUNDED, color=colors.AMBER, size=40),
         content=Text("This is now in updating!!!",color=colors.BLACK54),
-        actions=[IconButton(icons.WARNING_AMBER_OUTLINED)]
+        actions=[IconButton(icons.LABEL_IMPORTANT_ROUNDED)]
         )
 
     def theme(e):
@@ -80,7 +79,7 @@ def main(page:Page):
                 dropdown.Option("Kelvin"),
             ],
         )
-        
+    
     
     d2=Dropdown(
             width=boxw,
@@ -121,7 +120,7 @@ def main(page:Page):
         opacity=0.9,
         read_only=True
     )
-    
+
     def mainfunc(e):
         inp1=box1.value
 
@@ -135,27 +134,27 @@ def main(page:Page):
                 page.update()    
     
             elif d1.value =="Celcius" and d2.value == "Farenheit":
-                box2.value=str((int(inp1)*9/5)+32)
+                box2.value=str((float(inp1)*9/5)+32)
                 page.update()
 
             elif d1.value =="Celcius" and d2.value == "Kelvin":
-                box2.value=str(int(inp1)+273.15)
+                box2.value=str(float(inp1)+273.15)
                 page.update()
 
             elif d1.value =="Farenheit" and d2.value == "Kelvin":
-                box2.value=str((int(inp1)-32)*5/9+273.15)
+                box2.value=str((float(inp1)-32)*5/9+273.15)
                 page.update()
 
             elif d1.value =="Farenheit" and d2.value == "Celcius":
-                box2.value=str((int(inp1)-32)*5/9)
+                box2.value=str((float(inp1)-32)*5/9)
                 page.update()
 
             elif d1.value =="Kelvin" and d2.value == "Celcius":
-                box2.value=str(int(inp1)-273.15)
+                box2.value=str(float(inp1)-273.15)
                 page.update()
                 
             elif d1.value =="Kelvin" and d2.value == "Farenheit":
-                box2.value=str((int(inp1)-273.15)*9/5+32)
+                box2.value=str((float(inp1)-273.15)*9/5+32)
                 page.update()
         except Exception as e:
             print("error",e)
