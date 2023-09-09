@@ -8,24 +8,32 @@ from flet import (
     Dropdown,
     dropdown,
     IconButton,
-    alignment,
     KeyboardType,
     ThemeMode,
     icons,
     AppBar,
     Icon,
-    Banner
+    Banner,
 
 )
+from time import sleep
 
 def main(page:Page):
     page.title="Welcome to Aditya's Temrature-Converter"
     page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
     page.theme_mode = ThemeMode.DARK
-    page.auto_scroll = False
-    page.window_height=700
-    page.window_width=600
+
+    def openbn():
+        page.banner.open=True
+        page.update()
+
+    page.banner=Banner(  
+        bgcolor=colors.AMBER_100,
+        leading=Icon(icons.WARNING_AMBER_ROUNDED, color=colors.AMBER, size=40),
+        content=Text("This is now in updating!!!",color=colors.BLACK54),
+        actions=[IconButton(icons.WARNING_AMBER_OUTLINED)]
+        )
 
     def theme(e):
         if page.theme_mode == ThemeMode.DARK:
@@ -38,7 +46,10 @@ def main(page:Page):
             page.update()
             
     def profile(e):
-        pass
+        openbn()
+        sleep(5)
+        page.banner.open=False
+        page.update()
 
     page.appbar=AppBar(
         leading=Icon(icons.CALCULATE_ROUNDED),
@@ -47,17 +58,19 @@ def main(page:Page):
         center_title=False,
         bgcolor=colors.OUTLINE_VARIANT,
         actions=[
-            IconButton(icons.LIGHT_MODE_OUTLINED,on_click=lambda e:theme(e)),
-            IconButton(icons.WEB_OUTLINED),
+            IconButton(icons.LIGHT_MODE_OUTLINED,on_click=lambda e:theme(e),tooltip="Theme Mode"),
+            IconButton(icons.WEB_OUTLINED,on_click= lambda e:profile(e)),
             IconButton(
                 icon=icons.MENU_SHARP,
                 on_click=lambda e:profile(e),
                 )
         ],
     )
+
     boxh = 200
     boxw = 260
     fsize = 40
+
     d1 = Dropdown(
             width=boxw,
             value="Celcius",
@@ -80,6 +93,7 @@ def main(page:Page):
             ], 
             
             )
+    
     box1= TextField(
         text_align="center",
         text_size= fsize,
@@ -93,6 +107,7 @@ def main(page:Page):
         opacity=0.9,
         max_length=8,
         )
+    
     page.update()    
 
     box2= TextField(
@@ -106,6 +121,7 @@ def main(page:Page):
         opacity=0.9,
         read_only=True
     )
+    
     def mainfunc(e):
         inp1=box1.value
 
@@ -162,5 +178,6 @@ def main(page:Page):
         ),
 
     )
+
 if __name__=="__main__":
     app(target=main)
