@@ -4,16 +4,12 @@ from flet import (
     Text,
     TextField,
     colors,
-    Container,
-    Column,
     Row,
-    OutlinedButton,
     Dropdown,
     dropdown,
     IconButton,
     alignment,
     KeyboardType,
-    TextAlign,
     ThemeMode,
     icons,
     AppBar,
@@ -110,10 +106,6 @@ def main(page:Page):
         opacity=0.9,
         read_only=True
     )
-    btn =OutlinedButton(
-        text="calculate",
-        on_click=lambda e:mainfunc(e),
-    )
     def mainfunc(e):
         inp1=box1.value
 
@@ -168,7 +160,7 @@ def main(page:Page):
             ],
             alignment="center",
         ),
-        btn
+
     )
 if __name__=="__main__":
     app(target=main)
