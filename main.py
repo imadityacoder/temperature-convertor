@@ -14,6 +14,7 @@ from flet import (
     AppBar,
     Icon,
     Banner,
+    AppView
 
 )
 from time import sleep
@@ -84,7 +85,6 @@ def main(page:Page):
     d2=Dropdown(
             width=boxw,
             value="Farenheit",
-            bgcolor=colors.BLUE_500,
             options=[
                 dropdown.Option("Celcius"),
                 dropdown.Option("Farenheit"),
@@ -158,6 +158,7 @@ def main(page:Page):
                 page.update()
         except Exception as e:
             print("error",e)
+            page.update()
 
 
     page.add(
@@ -177,6 +178,6 @@ def main(page:Page):
         ),
 
     )
-
+    page.update()
 if __name__=="__main__":
     app(target=main)
