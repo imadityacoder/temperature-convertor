@@ -4,6 +4,7 @@ from flet import (
     Text,
     TextField,
     colors,
+    Row,
     Dropdown,
     dropdown,
     IconButton,
@@ -13,21 +14,15 @@ from flet import (
     AppBar,
     Icon,
     Banner,
-    ResponsiveRow,
-    Padding,
+    AppView
 
 )
 from time import sleep
 
-
 def main(page:Page):
-    page.vertical_alignment = "top"
+    page.title="Welcome to Aditya's Temrature-Converter"
+    page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
-    page.window_height = 720
-    page.window_width = 420
-    page.theme_mode=ThemeMode.DARK
-    page.padding = Padding(top=30,bottom=6,right=6,left=6)
-
 
     def openbn():
         page.banner.open=True
@@ -46,7 +41,7 @@ def main(page:Page):
             page.bgcolor= colors.LIGHT_GREEN_100
             page.update()
         else:
-            page.theme_mode=ThemeMode.DARK
+            page.theme_mode=ThemeMode.DARK   
             page.bgcolor=colors.BACKGROUND
             page.update()
             
@@ -57,26 +52,24 @@ def main(page:Page):
         page.update()
 
     page.appbar=AppBar(
-        leading=Icon(icons.DEVICE_THERMOSTAT_SHARP),
-        leading_width=40,
-        title=Text("Aditya's Temprature Converter",size=16),
+        leading=Icon(icons.CALCULATE_ROUNDED),
+        leading_width=35,
+        title=Text("Aditya's Temprature Converter"),
         center_title=False,
         bgcolor=colors.OUTLINE_VARIANT,
         actions=[
+            IconButton(icons.LIGHT_MODE_OUTLINED,on_click=lambda e:theme(e),tooltip="Theme Mode"),
+            IconButton(icons.WEB_OUTLINED,on_click= lambda e:profile(e)),
             IconButton(
-                icons.LIGHT_MODE_OUTLINED,
-                on_click=lambda e:theme(e),
-                tooltip="Theme Mode"
-                ),
-            IconButton(
-                icons.SETTINGS_SHARP,
-                on_click= lambda e:profile(e)
-                ),
+                icon=icons.MENU_SHARP,
+                on_click=lambda e:profile(e),
+                )
         ],
     )
 
+    boxh = 200
     boxw = 260
-    fsize = 26
+    fsize = 40
 
     d1 = Dropdown(
             width=boxw,
@@ -104,25 +97,28 @@ def main(page:Page):
         text_align="center",
         text_size= fsize,
         border_radius= 10,
+        tooltip="ENTER HERE",
         autofocus= True,
         on_change=lambda e:mainfunc(e),
         bgcolor=colors.GREEN_600,
+        height=boxh,
         width=boxw,
-        keyboard_type=KeyboardType.NUMBER,
-        max_length=12,
-        
+        opacity=0.9,
+        max_length=8,
         )
+    
+    page.update()    
 
     box2= TextField(
         text_align="center",
         text_size= fsize,
+        max_length=12,
         border_radius= 8,
         bgcolor=colors.BLUE_ACCENT_400,
+        height=boxh,
         width=boxw,
-        read_only=True,
-        adaptive=True,
-        max_length=18,
-        
+        opacity=0.9,
+        read_only=True
     )
 
     def mainfunc(e):
@@ -130,15 +126,14 @@ def main(page:Page):
 
         try:
             if d1.value ==  d2.value:
-                box2.value=int(inp1)
+                box2.value=inp1
                 page.update()
 
             elif box1.value == "":
-                box2.value= ""
-                page.update()
+                box2.value=""
+                page.update()    
     
             elif d1.value =="Celcius" and d2.value == "Farenheit":
-                
                 box2.value=str((float(inp1)*9/5)+32)
                 page.update()
 
@@ -147,11 +142,11 @@ def main(page:Page):
                 page.update()
 
             elif d1.value =="Farenheit" and d2.value == "Kelvin":
-                box2.value=str(((float(inp1)-32)*5/9+273.15)//1)
+                box2.value=str((float(inp1)-32)*5/9+273.15)
                 page.update()
 
             elif d1.value =="Farenheit" and d2.value == "Celcius":
-                box2.value=str(((float(inp1)-32)*5/9)//1)
+                box2.value=str((float(inp1)-32)*5/9)
                 page.update()
 
             elif d1.value =="Kelvin" and d2.value == "Celcius":
@@ -159,30 +154,30 @@ def main(page:Page):
                 page.update()
                 
             elif d1.value =="Kelvin" and d2.value == "Farenheit":
-                box2.value=str(((float(inp1)-273.15)*9/5+32)//1)
+                box2.value=str((float(inp1)-273.15)*9/5+32)
                 page.update()
-
-        except Exception:
-            pass
+        except Exception as e:
+            print("error",e)
+            page.update()
 
 
     page.add(
-        
-        ResponsiveRow(
-            controls=[
+        Row(
+            [
                 d1,
-                box1,
+                d2
             ],
+            alignment="center",
         ),
-        ResponsiveRow(
-            controls=[
-                d2,
-                box2,
+        Row(
+            [
+                box1,
+                box2
             ],
-           
+            alignment="center",
         ),
 
     )
     page.update()
-
-app(target=main)
+if __name__=="__main__":
+    app(target=main)
